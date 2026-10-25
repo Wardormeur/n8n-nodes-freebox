@@ -29,7 +29,7 @@ export class FreeboxApi implements ICredentialType {
 			displayName: 'App ID',
 			name: 'appId',
 			type: 'string',
-			default: 'fr.wardormeur.n8n',
+			default: 'n8n.community.freebox',
 			required: true,
 			description: 'The app_id used when the app was authorized on the box',
 		},

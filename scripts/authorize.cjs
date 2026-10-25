@@ -10,7 +10,7 @@ const os = require('os');
 const path = require('path');
 
 const BASE = process.env.FREEBOX_URL || 'http://mafreebox.freebox.fr';
-const APP_ID = 'fr.wardormeur.n8n';
+const APP_ID = 'n8n.community.freebox';
 const envFile = path.join(__dirname, '..', '.env');
 
 async function api(method, url, body) {
