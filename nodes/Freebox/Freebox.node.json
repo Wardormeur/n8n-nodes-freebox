@@ -1,0 +1,10 @@
+{
+	"node": "n8n-nodes-freebox.freebox",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Utility"],
+	"resources": {
+		"credentialDocumentation": [{ "url": "https://github.com/wardormeur/n8n-nodes-freebox#credentials" }],
+		"primaryDocumentation": [{ "url": "https://github.com/wardormeur/n8n-nodes-freebox#readme" }]
+	}
+}

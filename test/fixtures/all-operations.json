@@ -1,0 +1,1678 @@
+{
+	"id": "freeboxFixtureAll1",
+	"name": "Freebox fixture: all operations",
+	"nodes": [
+		{
+			"id": "start",
+			"name": "Start",
+			"type": "n8n-nodes-base.manualTrigger",
+			"typeVersion": 1,
+			"position": [
+				0,
+				0
+			],
+			"parameters": {}
+		},
+		{
+			"id": "s0",
+			"name": "System: Get",
+			"type": "CUSTOM.freebox",
+			"typeVersion": 1,
+			"position": [
+				440,
+				0
+			],
+			"parameters": {
+				"resource": "system",
+				"operation": "get"
+			},
+			"credentials": {
+				"freeboxApi": "auto"
+			},
+			"executeOnce": true,
+			"alwaysOutputData": true
+		},
+		{
+			"id": "c0",
+			"name": "Check: System: Get",
+			"type": "n8n-nodes-base.if",
+			"typeVersion": 2.3,
+			"position": [
+				660,
+				0
+			],
+			"executeOnce": true,
+			"parameters": {
+				"conditions": {
+					"options": {
+						"caseSensitive": true,
+						"leftValue": "",
+						"typeValidation": "strict",
+						"version": 3
+					},
+					"conditions": [
+						{
+							"id": "c0c",
+							"leftValue": "={{ ((items) => (items.every((j) => !j.error)) && (items.every((j) => [\"model_info\",\"firmware_version\",\"uptime_val\"].every((k) => k in j))))($('System: Get').all().map((i) => i.json)) }}",
+							"rightValue": "",
+							"operator": {
+								"type": "boolean",
+								"operation": "true",
+								"singleValue": true
+							}
+						}
+					],
+					"combinator": "and"
+				},
+				"options": {}
+			}
+		},
+		{
+			"id": "f0",
+			"name": "Failed: System: Get",
+			"type": "n8n-nodes-base.stopAndError",
+			"typeVersion": 1,
+			"position": [
+				660,
+				200
+			],
+			"parameters": {
+				"errorMessage": "={{ ((items) => \"System: Get: expected \" + [[\"no error\", (items.every((j) => !j.error))], [\"keys model_info, firmware_version, uptime_val\", (items.every((j) => [\"model_info\",\"firmware_version\",\"uptime_val\"].every((k) => k in j)))]].filter((pair) => !pair[1]).map((pair) => pair[0]).join(', ') + '; got ' + JSON.stringify(items).slice(0, 400))($('System: Get').all().map((i) => i.json)) }}"
+			}
+		},
+		{
+			"id": "s1",
+			"name": "Connection: Get Status",
+			"type": "CUSTOM.freebox",
+			"typeVersion": 1,
+			"position": [
+				880,
+				0
+			],
+			"parameters": {
+				"resource": "connection",
+				"operation": "getStatus"
+			},
+			"credentials": {
+				"freeboxApi": "auto"
+			},
+			"executeOnce": true,
+			"alwaysOutputData": true
+		},
+		{
+			"id": "c1",
+			"name": "Check: Connection: Get Status",
+			"type": "n8n-nodes-base.if",
+			"typeVersion": 2.3,
+			"position": [
+				1100,
+				0
+			],
+			"executeOnce": true,
+			"parameters": {
+				"conditions": {
+					"options": {
+						"caseSensitive": true,
+						"leftValue": "",
+						"typeValidation": "strict",
+						"version": 3
+					},
+					"conditions": [
+						{
+							"id": "c1c",
+							"leftValue": "={{ ((items) => (items.every((j) => !j.error)) && (items.every((j) => [\"state\",\"media\",\"rate_down\"].every((k) => k in j))))($('Connection: Get Status').all().map((i) => i.json)) }}",
+							"rightValue": "",
+							"operator": {
+								"type": "boolean",
+								"operation": "true",
+								"singleValue": true
+							}
+						}
+					],
+					"combinator": "and"
+				},
+				"options": {}
+			}
+		},
+		{
+			"id": "f1",
+			"name": "Failed: Connection: Get Status",
+			"type": "n8n-nodes-base.stopAndError",
+			"typeVersion": 1,
+			"position": [
+				1100,
+				200
+			],
+			"parameters": {
+				"errorMessage": "={{ ((items) => \"Connection: Get Status: expected \" + [[\"no error\", (items.every((j) => !j.error))], [\"keys state, media, rate_down\", (items.every((j) => [\"state\",\"media\",\"rate_down\"].every((k) => k in j)))]].filter((pair) => !pair[1]).map((pair) => pair[0]).join(', ') + '; got ' + JSON.stringify(items).slice(0, 400))($('Connection: Get Status').all().map((i) => i.json)) }}"
+			}
+		},
+		{
+			"id": "s2",
+			"name": "Connection: Get Line",
+			"type": "CUSTOM.freebox",
+			"typeVersion": 1,
+			"position": [
+				1320,
+				0
+			],
+			"parameters": {
+				"resource": "connection",
+				"operation": "getLine"
+			},
+			"credentials": {
+				"freeboxApi": "auto"
+			},
+			"executeOnce": true,
+			"alwaysOutputData": true
+		},
+		{
+			"id": "c2",
+			"name": "Check: Connection: Get Line",
+			"type": "n8n-nodes-base.if",
+			"typeVersion": 2.3,
+			"position": [
+				1540,
+				0
+			],
+			"executeOnce": true,
+			"parameters": {
+				"conditions": {
+					"options": {
+						"caseSensitive": true,
+						"leftValue": "",
+						"typeValidation": "strict",
+						"version": 3
+					},
+					"conditions": [
+						{
+							"id": "c2c",
+							"leftValue": "={{ ((items) => (items.every((j) => !j.error)) && (items.every((j) => [\"media\"].every((k) => k in j))))($('Connection: Get Line').all().map((i) => i.json)) }}",
+							"rightValue": "",
+							"operator": {
+								"type": "boolean",
+								"operation": "true",
+								"singleValue": true
+							}
+						}
+					],
+					"combinator": "and"
+				},
+				"options": {}
+			}
+		},
+		{
+			"id": "f2",
+			"name": "Failed: Connection: Get Line",
+			"type": "n8n-nodes-base.stopAndError",
+			"typeVersion": 1,
+			"position": [
+				1540,
+				200
+			],
+			"parameters": {
+				"errorMessage": "={{ ((items) => \"Connection: Get Line: expected \" + [[\"no error\", (items.every((j) => !j.error))], [\"keys media\", (items.every((j) => [\"media\"].every((k) => k in j)))]].filter((pair) => !pair[1]).map((pair) => pair[0]).join(', ') + '; got ' + JSON.stringify(items).slice(0, 400))($('Connection: Get Line').all().map((i) => i.json)) }}"
+			}
+		},
+		{
+			"id": "s3",
+			"name": "Connection: Get Configuration",
+			"type": "CUSTOM.freebox",
+			"typeVersion": 1,
+			"position": [
+				1760,
+				0
+			],
+			"parameters": {
+				"resource": "connection",
+				"operation": "getConfig"
+			},
+			"credentials": {
+				"freeboxApi": "auto"
+			},
+			"executeOnce": true,
+			"alwaysOutputData": true
+		},
+		{
+			"id": "c3",
+			"name": "Check: Connection: Get Configuration",
+			"type": "n8n-nodes-base.if",
+			"typeVersion": 2.3,
+			"position": [
+				1980,
+				0
+			],
+			"executeOnce": true,
+			"parameters": {
+				"conditions": {
+					"options": {
+						"caseSensitive": true,
+						"leftValue": "",
+						"typeValidation": "strict",
+						"version": 3
+					},
+					"conditions": [
+						{
+							"id": "c3c",
+							"leftValue": "={{ ((items) => (items.every((j) => !j.error)) && (items.length === 1))($('Connection: Get Configuration').all().map((i) => i.json)) }}",
+							"rightValue": "",
+							"operator": {
+								"type": "boolean",
+								"operation": "true",
+								"singleValue": true
+							}
+						}
+					],
+					"combinator": "and"
+				},
+				"options": {}
+			}
+		},
+		{
+			"id": "f3",
+			"name": "Failed: Connection: Get Configuration",
+			"type": "n8n-nodes-base.stopAndError",
+			"typeVersion": 1,
+			"position": [
+				1980,
+				200
+			],
+			"parameters": {
+				"errorMessage": "={{ ((items) => \"Connection: Get Configuration: expected \" + [[\"no error\", (items.every((j) => !j.error))], [\"exactly 1 item(s)\", (items.length === 1)]].filter((pair) => !pair[1]).map((pair) => pair[0]).join(', ') + '; got ' + JSON.stringify(items).slice(0, 400))($('Connection: Get Configuration').all().map((i) => i.json)) }}"
+			}
+		},
+		{
+			"id": "s4",
+			"name": "Device: Get Many (active)",
+			"type": "CUSTOM.freebox",
+			"typeVersion": 1,
+			"position": [
+				2200,
+				0
+			],
+			"parameters": {
+				"resource": "device",
+				"operation": "getAll",
+				"activeOnly": true,
+				"returnAll": true
+			},
+			"credentials": {
+				"freeboxApi": "auto"
+			},
+			"executeOnce": true,
+			"alwaysOutputData": true
+		},
+		{
+			"id": "c4",
+			"name": "Check: Device: Get Many (active)",
+			"type": "n8n-nodes-base.if",
+			"typeVersion": 2.3,
+			"position": [
+				2420,
+				0
+			],
+			"executeOnce": true,
+			"parameters": {
+				"conditions": {
+					"options": {
+						"caseSensitive": true,
+						"leftValue": "",
+						"typeValidation": "strict",
+						"version": 3
+					},
+					"conditions": [
+						{
+							"id": "c4c",
+							"leftValue": "={{ ((items) => (items.every((j) => !j.error)) && (items.length >= 1) && (items.every((j) => [\"id\",\"primary_name\"].every((k) => k in j))) && (items.every((j) => j.active === true)))($('Device: Get Many (active)').all().map((i) => i.json)) }}",
+							"rightValue": "",
+							"operator": {
+								"type": "boolean",
+								"operation": "true",
+								"singleValue": true
+							}
+						}
+					],
+					"combinator": "and"
+				},
+				"options": {}
+			}
+		},
+		{
+			"id": "f4",
+			"name": "Failed: Device: Get Many (active)",
+			"type": "n8n-nodes-base.stopAndError",
+			"typeVersion": 1,
+			"position": [
+				2420,
+				200
+			],
+			"parameters": {
+				"errorMessage": "={{ ((items) => \"Device: Get Many (active): expected \" + [[\"no error\", (items.every((j) => !j.error))], [\"at least 1 item(s)\", (items.length >= 1)], [\"keys id, primary_name\", (items.every((j) => [\"id\",\"primary_name\"].every((k) => k in j)))], [\"all active\", (items.every((j) => j.active === true))]].filter((pair) => !pair[1]).map((pair) => pair[0]).join(', ') + '; got ' + JSON.stringify(items).slice(0, 400))($('Device: Get Many (active)').all().map((i) => i.json)) }}"
+			}
+		},
+		{
+			"id": "s5",
+			"name": "Device: Get Many (limit 3, fields)",
+			"type": "CUSTOM.freebox",
+			"typeVersion": 1,
+			"position": [
+				2640,
+				0
+			],
+			"parameters": {
+				"resource": "device",
+				"operation": "getAll",
+				"limit": 3,
+				"output": "fields",
+				"fields": [
+					"primary_name",
+					"active"
+				]
+			},
+			"credentials": {
+				"freeboxApi": "auto"
+			},
+			"executeOnce": true,
+			"alwaysOutputData": true
+		},
+		{
+			"id": "c5",
+			"name": "Check: Device: Get Many (limit 3, fields)",
+			"type": "n8n-nodes-base.if",
+			"typeVersion": 2.3,
+			"position": [
+				2860,
+				0
+			],
+			"executeOnce": true,
+			"parameters": {
+				"conditions": {
+					"options": {
+						"caseSensitive": true,
+						"leftValue": "",
+						"typeValidation": "strict",
+						"version": 3
+					},
+					"conditions": [
+						{
+							"id": "c5c",
+							"leftValue": "={{ ((items) => (items.every((j) => !j.error)) && (items.length === 3) && (items.every((j) => Object.keys(j).every((k) => [\"id\",\"primary_name\",\"active\"].includes(k)))))($('Device: Get Many (limit 3, fields)').all().map((i) => i.json)) }}",
+							"rightValue": "",
+							"operator": {
+								"type": "boolean",
+								"operation": "true",
+								"singleValue": true
+							}
+						}
+					],
+					"combinator": "and"
+				},
+				"options": {}
+			}
+		},
+		{
+			"id": "f5",
+			"name": "Failed: Device: Get Many (limit 3, fields)",
+			"type": "n8n-nodes-base.stopAndError",
+			"typeVersion": 1,
+			"position": [
+				2860,
+				200
+			],
+			"parameters": {
+				"errorMessage": "={{ ((items) => \"Device: Get Many (limit 3, fields): expected \" + [[\"no error\", (items.every((j) => !j.error))], [\"exactly 3 item(s)\", (items.length === 3)], [\"only keys id, primary_name, active\", (items.every((j) => Object.keys(j).every((k) => [\"id\",\"primary_name\",\"active\"].includes(k))))]].filter((pair) => !pair[1]).map((pair) => pair[0]).join(', ') + '; got ' + JSON.stringify(items).slice(0, 400))($('Device: Get Many (limit 3, fields)').all().map((i) => i.json)) }}"
+			}
+		},
+		{
+			"id": "s6",
+			"name": "Device: Get (first device)",
+			"type": "CUSTOM.freebox",
+			"typeVersion": 1,
+			"position": [
+				3080,
+				0
+			],
+			"parameters": {
+				"resource": "device",
+				"operation": "get",
+				"deviceId": "={{ $('Device: Get Many (limit 3, fields)').first().json.id }}"
+			},
+			"credentials": {
+				"freeboxApi": "auto"
+			},
+			"executeOnce": true,
+			"alwaysOutputData": true
+		},
+		{
+			"id": "c6",
+			"name": "Check: Device: Get (first device)",
+			"type": "n8n-nodes-base.if",
+			"typeVersion": 2.3,
+			"position": [
+				3300,
+				0
+			],
+			"executeOnce": true,
+			"parameters": {
+				"conditions": {
+					"options": {
+						"caseSensitive": true,
+						"leftValue": "",
+						"typeValidation": "strict",
+						"version": 3
+					},
+					"conditions": [
+						{
+							"id": "c6c",
+							"leftValue": "={{ ((items) => (items.every((j) => !j.error)) && (items.length === 1) && (items.every((j) => [\"id\",\"primary_name\"].every((k) => k in j))))($('Device: Get (first device)').all().map((i) => i.json)) }}",
+							"rightValue": "",
+							"operator": {
+								"type": "boolean",
+								"operation": "true",
+								"singleValue": true
+							}
+						}
+					],
+					"combinator": "and"
+				},
+				"options": {}
+			}
+		},
+		{
+			"id": "f6",
+			"name": "Failed: Device: Get (first device)",
+			"type": "n8n-nodes-base.stopAndError",
+			"typeVersion": 1,
+			"position": [
+				3300,
+				200
+			],
+			"parameters": {
+				"errorMessage": "={{ ((items) => \"Device: Get (first device): expected \" + [[\"no error\", (items.every((j) => !j.error))], [\"exactly 1 item(s)\", (items.length === 1)], [\"keys id, primary_name\", (items.every((j) => [\"id\",\"primary_name\"].every((k) => k in j)))]].filter((pair) => !pair[1]).map((pair) => pair[0]).join(', ') + '; got ' + JSON.stringify(items).slice(0, 400))($('Device: Get (first device)').all().map((i) => i.json)) }}"
+			}
+		},
+		{
+			"id": "s7",
+			"name": "Wi-Fi: Get State",
+			"type": "CUSTOM.freebox",
+			"typeVersion": 1,
+			"position": [
+				3520,
+				0
+			],
+			"parameters": {
+				"resource": "wifi",
+				"operation": "getState"
+			},
+			"credentials": {
+				"freeboxApi": "auto"
+			},
+			"executeOnce": true,
+			"alwaysOutputData": true
+		},
+		{
+			"id": "c7",
+			"name": "Check: Wi-Fi: Get State",
+			"type": "n8n-nodes-base.if",
+			"typeVersion": 2.3,
+			"position": [
+				3740,
+				0
+			],
+			"executeOnce": true,
+			"parameters": {
+				"conditions": {
+					"options": {
+						"caseSensitive": true,
+						"leftValue": "",
+						"typeValidation": "strict",
+						"version": 3
+					},
+					"conditions": [
+						{
+							"id": "c7c",
+							"leftValue": "={{ ((items) => (items.every((j) => !j.error)) && (items.every((j) => [\"enabled\"].every((k) => k in j))))($('Wi-Fi: Get State').all().map((i) => i.json)) }}",
+							"rightValue": "",
+							"operator": {
+								"type": "boolean",
+								"operation": "true",
+								"singleValue": true
+							}
+						}
+					],
+					"combinator": "and"
+				},
+				"options": {}
+			}
+		},
+		{
+			"id": "f7",
+			"name": "Failed: Wi-Fi: Get State",
+			"type": "n8n-nodes-base.stopAndError",
+			"typeVersion": 1,
+			"position": [
+				3740,
+				200
+			],
+			"parameters": {
+				"errorMessage": "={{ ((items) => \"Wi-Fi: Get State: expected \" + [[\"no error\", (items.every((j) => !j.error))], [\"keys enabled\", (items.every((j) => [\"enabled\"].every((k) => k in j)))]].filter((pair) => !pair[1]).map((pair) => pair[0]).join(', ') + '; got ' + JSON.stringify(items).slice(0, 400))($('Wi-Fi: Get State').all().map((i) => i.json)) }}"
+			}
+		},
+		{
+			"id": "s8",
+			"name": "Wi-Fi: Get Access Points",
+			"type": "CUSTOM.freebox",
+			"typeVersion": 1,
+			"position": [
+				3960,
+				0
+			],
+			"parameters": {
+				"resource": "wifi",
+				"operation": "getAccessPoints",
+				"returnAll": true
+			},
+			"credentials": {
+				"freeboxApi": "auto"
+			},
+			"executeOnce": true,
+			"alwaysOutputData": true
+		},
+		{
+			"id": "c8",
+			"name": "Check: Wi-Fi: Get Access Points",
+			"type": "n8n-nodes-base.if",
+			"typeVersion": 2.3,
+			"position": [
+				4180,
+				0
+			],
+			"executeOnce": true,
+			"parameters": {
+				"conditions": {
+					"options": {
+						"caseSensitive": true,
+						"leftValue": "",
+						"typeValidation": "strict",
+						"version": 3
+					},
+					"conditions": [
+						{
+							"id": "c8c",
+							"leftValue": "={{ ((items) => (items.every((j) => !j.error)) && (items.length >= 1) && (items.every((j) => [\"id\",\"status\"].every((k) => k in j))))($('Wi-Fi: Get Access Points').all().map((i) => i.json)) }}",
+							"rightValue": "",
+							"operator": {
+								"type": "boolean",
+								"operation": "true",
+								"singleValue": true
+							}
+						}
+					],
+					"combinator": "and"
+				},
+				"options": {}
+			}
+		},
+		{
+			"id": "f8",
+			"name": "Failed: Wi-Fi: Get Access Points",
+			"type": "n8n-nodes-base.stopAndError",
+			"typeVersion": 1,
+			"position": [
+				4180,
+				200
+			],
+			"parameters": {
+				"errorMessage": "={{ ((items) => \"Wi-Fi: Get Access Points: expected \" + [[\"no error\", (items.every((j) => !j.error))], [\"at least 1 item(s)\", (items.length >= 1)], [\"keys id, status\", (items.every((j) => [\"id\",\"status\"].every((k) => k in j)))]].filter((pair) => !pair[1]).map((pair) => pair[0]).join(', ') + '; got ' + JSON.stringify(items).slice(0, 400))($('Wi-Fi: Get Access Points').all().map((i) => i.json)) }}"
+			}
+		},
+		{
+			"id": "s9",
+			"name": "Wi-Fi: Get Networks",
+			"type": "CUSTOM.freebox",
+			"typeVersion": 1,
+			"position": [
+				4400,
+				0
+			],
+			"parameters": {
+				"resource": "wifi",
+				"operation": "getNetworks",
+				"returnAll": true
+			},
+			"credentials": {
+				"freeboxApi": "auto"
+			},
+			"executeOnce": true,
+			"alwaysOutputData": true
+		},
+		{
+			"id": "c9",
+			"name": "Check: Wi-Fi: Get Networks",
+			"type": "n8n-nodes-base.if",
+			"typeVersion": 2.3,
+			"position": [
+				4620,
+				0
+			],
+			"executeOnce": true,
+			"parameters": {
+				"conditions": {
+					"options": {
+						"caseSensitive": true,
+						"leftValue": "",
+						"typeValidation": "strict",
+						"version": 3
+					},
+					"conditions": [
+						{
+							"id": "c9c",
+							"leftValue": "={{ ((items) => (items.every((j) => !j.error)) && (items.length >= 1) && (!JSON.stringify(items).includes(\"\\\"key\\\":\")) && (!JSON.stringify(items).includes(\"\\\"wps_pin\\\":\")))($('Wi-Fi: Get Networks').all().map((i) => i.json)) }}",
+							"rightValue": "",
+							"operator": {
+								"type": "boolean",
+								"operation": "true",
+								"singleValue": true
+							}
+						}
+					],
+					"combinator": "and"
+				},
+				"options": {}
+			}
+		},
+		{
+			"id": "f9",
+			"name": "Failed: Wi-Fi: Get Networks",
+			"type": "n8n-nodes-base.stopAndError",
+			"typeVersion": 1,
+			"position": [
+				4620,
+				200
+			],
+			"parameters": {
+				"errorMessage": "={{ ((items) => \"Wi-Fi: Get Networks: expected \" + [[\"no error\", (items.every((j) => !j.error))], [\"at least 1 item(s)\", (items.length >= 1)], [\"no \\\"key\\\" anywhere\", (!JSON.stringify(items).includes(\"\\\"key\\\":\"))], [\"no \\\"wps_pin\\\" anywhere\", (!JSON.stringify(items).includes(\"\\\"wps_pin\\\":\"))]].filter((pair) => !pair[1]).map((pair) => pair[0]).join(', ') + '; got ' + JSON.stringify(items).slice(0, 400))($('Wi-Fi: Get Networks').all().map((i) => i.json)) }}"
+			}
+		},
+		{
+			"id": "s10",
+			"name": "DHCP Lease: Get Many",
+			"type": "CUSTOM.freebox",
+			"typeVersion": 1,
+			"position": [
+				4840,
+				0
+			],
+			"parameters": {
+				"resource": "dhcpLease",
+				"operation": "getAll",
+				"returnAll": true
+			},
+			"credentials": {
+				"freeboxApi": "auto"
+			},
+			"executeOnce": true,
+			"alwaysOutputData": true
+		},
+		{
+			"id": "c10",
+			"name": "Check: DHCP Lease: Get Many",
+			"type": "n8n-nodes-base.if",
+			"typeVersion": 2.3,
+			"position": [
+				5060,
+				0
+			],
+			"executeOnce": true,
+			"parameters": {
+				"conditions": {
+					"options": {
+						"caseSensitive": true,
+						"leftValue": "",
+						"typeValidation": "strict",
+						"version": 3
+					},
+					"conditions": [
+						{
+							"id": "c10c",
+							"leftValue": "={{ ((items) => (items.every((j) => !j.error)) && (items.length >= 1) && (items.every((j) => [\"mac\",\"ip\"].every((k) => k in j))))($('DHCP Lease: Get Many').all().map((i) => i.json)) }}",
+							"rightValue": "",
+							"operator": {
+								"type": "boolean",
+								"operation": "true",
+								"singleValue": true
+							}
+						}
+					],
+					"combinator": "and"
+				},
+				"options": {}
+			}
+		},
+		{
+			"id": "f10",
+			"name": "Failed: DHCP Lease: Get Many",
+			"type": "n8n-nodes-base.stopAndError",
+			"typeVersion": 1,
+			"position": [
+				5060,
+				200
+			],
+			"parameters": {
+				"errorMessage": "={{ ((items) => \"DHCP Lease: Get Many: expected \" + [[\"no error\", (items.every((j) => !j.error))], [\"at least 1 item(s)\", (items.length >= 1)], [\"keys mac, ip\", (items.every((j) => [\"mac\",\"ip\"].every((k) => k in j)))]].filter((pair) => !pair[1]).map((pair) => pair[0]).join(', ') + '; got ' + JSON.stringify(items).slice(0, 400))($('DHCP Lease: Get Many').all().map((i) => i.json)) }}"
+			}
+		},
+		{
+			"id": "s11",
+			"name": "Download: Get Many",
+			"type": "CUSTOM.freebox",
+			"typeVersion": 1,
+			"position": [
+				5280,
+				0
+			],
+			"parameters": {
+				"resource": "download",
+				"operation": "getAll",
+				"returnAll": true
+			},
+			"credentials": {
+				"freeboxApi": "auto"
+			},
+			"executeOnce": true,
+			"alwaysOutputData": true
+		},
+		{
+			"id": "c11",
+			"name": "Check: Download: Get Many",
+			"type": "n8n-nodes-base.if",
+			"typeVersion": 2.3,
+			"position": [
+				5500,
+				0
+			],
+			"executeOnce": true,
+			"parameters": {
+				"conditions": {
+					"options": {
+						"caseSensitive": true,
+						"leftValue": "",
+						"typeValidation": "strict",
+						"version": 3
+					},
+					"conditions": [
+						{
+							"id": "c11c",
+							"leftValue": "={{ ((items) => (items.every((j) => !j.error)))($('Download: Get Many').all().map((i) => i.json)) }}",
+							"rightValue": "",
+							"operator": {
+								"type": "boolean",
+								"operation": "true",
+								"singleValue": true
+							}
+						}
+					],
+					"combinator": "and"
+				},
+				"options": {}
+			}
+		},
+		{
+			"id": "f11",
+			"name": "Failed: Download: Get Many",
+			"type": "n8n-nodes-base.stopAndError",
+			"typeVersion": 1,
+			"position": [
+				5500,
+				200
+			],
+			"parameters": {
+				"errorMessage": "={{ ((items) => \"Download: Get Many: expected \" + [[\"no error\", (items.every((j) => !j.error))]].filter((pair) => !pair[1]).map((pair) => pair[0]).join(', ') + '; got ' + JSON.stringify(items).slice(0, 400))($('Download: Get Many').all().map((i) => i.json)) }}"
+			}
+		},
+		{
+			"id": "s12",
+			"name": "Download: Get Statistics",
+			"type": "CUSTOM.freebox",
+			"typeVersion": 1,
+			"position": [
+				5720,
+				0
+			],
+			"parameters": {
+				"resource": "download",
+				"operation": "getStats"
+			},
+			"credentials": {
+				"freeboxApi": "auto"
+			},
+			"executeOnce": true,
+			"alwaysOutputData": true
+		},
+		{
+			"id": "c12",
+			"name": "Check: Download: Get Statistics",
+			"type": "n8n-nodes-base.if",
+			"typeVersion": 2.3,
+			"position": [
+				5940,
+				0
+			],
+			"executeOnce": true,
+			"parameters": {
+				"conditions": {
+					"options": {
+						"caseSensitive": true,
+						"leftValue": "",
+						"typeValidation": "strict",
+						"version": 3
+					},
+					"conditions": [
+						{
+							"id": "c12c",
+							"leftValue": "={{ ((items) => (items.every((j) => !j.error)) && (items.every((j) => [\"nb_tasks\",\"throttling_mode\"].every((k) => k in j))))($('Download: Get Statistics').all().map((i) => i.json)) }}",
+							"rightValue": "",
+							"operator": {
+								"type": "boolean",
+								"operation": "true",
+								"singleValue": true
+							}
+						}
+					],
+					"combinator": "and"
+				},
+				"options": {}
+			}
+		},
+		{
+			"id": "f12",
+			"name": "Failed: Download: Get Statistics",
+			"type": "n8n-nodes-base.stopAndError",
+			"typeVersion": 1,
+			"position": [
+				5940,
+				200
+			],
+			"parameters": {
+				"errorMessage": "={{ ((items) => \"Download: Get Statistics: expected \" + [[\"no error\", (items.every((j) => !j.error))], [\"keys nb_tasks, throttling_mode\", (items.every((j) => [\"nb_tasks\",\"throttling_mode\"].every((k) => k in j)))]].filter((pair) => !pair[1]).map((pair) => pair[0]).join(', ') + '; got ' + JSON.stringify(items).slice(0, 400))($('Download: Get Statistics').all().map((i) => i.json)) }}"
+			}
+		},
+		{
+			"id": "s13",
+			"name": "Download: Get Speed Mode",
+			"type": "CUSTOM.freebox",
+			"typeVersion": 1,
+			"position": [
+				6160,
+				0
+			],
+			"parameters": {
+				"resource": "download",
+				"operation": "getSpeedMode"
+			},
+			"credentials": {
+				"freeboxApi": "auto"
+			},
+			"executeOnce": true,
+			"alwaysOutputData": true
+		},
+		{
+			"id": "c13",
+			"name": "Check: Download: Get Speed Mode",
+			"type": "n8n-nodes-base.if",
+			"typeVersion": 2.3,
+			"position": [
+				6380,
+				0
+			],
+			"executeOnce": true,
+			"parameters": {
+				"conditions": {
+					"options": {
+						"caseSensitive": true,
+						"leftValue": "",
+						"typeValidation": "strict",
+						"version": 3
+					},
+					"conditions": [
+						{
+							"id": "c13c",
+							"leftValue": "={{ ((items) => (items.every((j) => !j.error)) && (items.every((j) => [\"throttling\",\"is_scheduled\"].every((k) => k in j))))($('Download: Get Speed Mode').all().map((i) => i.json)) }}",
+							"rightValue": "",
+							"operator": {
+								"type": "boolean",
+								"operation": "true",
+								"singleValue": true
+							}
+						}
+					],
+					"combinator": "and"
+				},
+				"options": {}
+			}
+		},
+		{
+			"id": "f13",
+			"name": "Failed: Download: Get Speed Mode",
+			"type": "n8n-nodes-base.stopAndError",
+			"typeVersion": 1,
+			"position": [
+				6380,
+				200
+			],
+			"parameters": {
+				"errorMessage": "={{ ((items) => \"Download: Get Speed Mode: expected \" + [[\"no error\", (items.every((j) => !j.error))], [\"keys throttling, is_scheduled\", (items.every((j) => [\"throttling\",\"is_scheduled\"].every((k) => k in j)))]].filter((pair) => !pair[1]).map((pair) => pair[0]).join(', ') + '; got ' + JSON.stringify(items).slice(0, 400))($('Download: Get Speed Mode').all().map((i) => i.json)) }}"
+			}
+		},
+		{
+			"id": "s14",
+			"name": "Call: Get Many (missed, 5)",
+			"type": "CUSTOM.freebox",
+			"typeVersion": 1,
+			"position": [
+				6600,
+				0
+			],
+			"parameters": {
+				"resource": "call",
+				"operation": "getAll",
+				"limit": 5,
+				"filters": {
+					"types": [
+						"missed"
+					]
+				}
+			},
+			"credentials": {
+				"freeboxApi": "auto"
+			},
+			"executeOnce": true,
+			"alwaysOutputData": true
+		},
+		{
+			"id": "c14",
+			"name": "Check: Call: Get Many (missed, 5)",
+			"type": "n8n-nodes-base.if",
+			"typeVersion": 2.3,
+			"position": [
+				6820,
+				0
+			],
+			"executeOnce": true,
+			"parameters": {
+				"conditions": {
+					"options": {
+						"caseSensitive": true,
+						"leftValue": "",
+						"typeValidation": "strict",
+						"version": 3
+					},
+					"conditions": [
+						{
+							"id": "c14c",
+							"leftValue": "={{ ((items) => (items.every((j) => !j.error)) && (items.length <= 5 && items.every((j) => !('type' in j) || j.type === 'missed')))($('Call: Get Many (missed, 5)').all().map((i) => i.json)) }}",
+							"rightValue": "",
+							"operator": {
+								"type": "boolean",
+								"operation": "true",
+								"singleValue": true
+							}
+						}
+					],
+					"combinator": "and"
+				},
+				"options": {}
+			}
+		},
+		{
+			"id": "f14",
+			"name": "Failed: Call: Get Many (missed, 5)",
+			"type": "n8n-nodes-base.stopAndError",
+			"typeVersion": 1,
+			"position": [
+				6820,
+				200
+			],
+			"parameters": {
+				"errorMessage": "={{ ((items) => \"Call: Get Many (missed, 5): expected \" + [[\"no error\", (items.every((j) => !j.error))], [\"at most 5, all missed\", (items.length <= 5 && items.every((j) => !('type' in j) || j.type === 'missed'))]].filter((pair) => !pair[1]).map((pair) => pair[0]).join(', ') + '; got ' + JSON.stringify(items).slice(0, 400))($('Call: Get Many (missed, 5)').all().map((i) => i.json)) }}"
+			}
+		},
+		{
+			"id": "s15",
+			"name": "Voicemail: Get Many",
+			"type": "CUSTOM.freebox",
+			"typeVersion": 1,
+			"position": [
+				7040,
+				0
+			],
+			"parameters": {
+				"resource": "voicemail",
+				"operation": "getAll",
+				"returnAll": true
+			},
+			"credentials": {
+				"freeboxApi": "auto"
+			},
+			"executeOnce": true,
+			"alwaysOutputData": true
+		},
+		{
+			"id": "c15",
+			"name": "Check: Voicemail: Get Many",
+			"type": "n8n-nodes-base.if",
+			"typeVersion": 2.3,
+			"position": [
+				7260,
+				0
+			],
+			"executeOnce": true,
+			"parameters": {
+				"conditions": {
+					"options": {
+						"caseSensitive": true,
+						"leftValue": "",
+						"typeValidation": "strict",
+						"version": 3
+					},
+					"conditions": [
+						{
+							"id": "c15c",
+							"leftValue": "={{ ((items) => (items.every((j) => !j.error)))($('Voicemail: Get Many').all().map((i) => i.json)) }}",
+							"rightValue": "",
+							"operator": {
+								"type": "boolean",
+								"operation": "true",
+								"singleValue": true
+							}
+						}
+					],
+					"combinator": "and"
+				},
+				"options": {}
+			}
+		},
+		{
+			"id": "f15",
+			"name": "Failed: Voicemail: Get Many",
+			"type": "n8n-nodes-base.stopAndError",
+			"typeVersion": 1,
+			"position": [
+				7260,
+				200
+			],
+			"parameters": {
+				"errorMessage": "={{ ((items) => \"Voicemail: Get Many: expected \" + [[\"no error\", (items.every((j) => !j.error))]].filter((pair) => !pair[1]).map((pair) => pair[0]).join(', ') + '; got ' + JSON.stringify(items).slice(0, 400))($('Voicemail: Get Many').all().map((i) => i.json)) }}"
+			}
+		},
+		{
+			"id": "s16",
+			"name": "Contact: Get Many",
+			"type": "CUSTOM.freebox",
+			"typeVersion": 1,
+			"position": [
+				7480,
+				0
+			],
+			"parameters": {
+				"resource": "contact",
+				"operation": "getAll",
+				"returnAll": true
+			},
+			"credentials": {
+				"freeboxApi": "auto"
+			},
+			"executeOnce": true,
+			"alwaysOutputData": true
+		},
+		{
+			"id": "c16",
+			"name": "Check: Contact: Get Many",
+			"type": "n8n-nodes-base.if",
+			"typeVersion": 2.3,
+			"position": [
+				7700,
+				0
+			],
+			"executeOnce": true,
+			"parameters": {
+				"conditions": {
+					"options": {
+						"caseSensitive": true,
+						"leftValue": "",
+						"typeValidation": "strict",
+						"version": 3
+					},
+					"conditions": [
+						{
+							"id": "c16c",
+							"leftValue": "={{ ((items) => (items.every((j) => !j.error)))($('Contact: Get Many').all().map((i) => i.json)) }}",
+							"rightValue": "",
+							"operator": {
+								"type": "boolean",
+								"operation": "true",
+								"singleValue": true
+							}
+						}
+					],
+					"combinator": "and"
+				},
+				"options": {}
+			}
+		},
+		{
+			"id": "f16",
+			"name": "Failed: Contact: Get Many",
+			"type": "n8n-nodes-base.stopAndError",
+			"typeVersion": 1,
+			"position": [
+				7700,
+				200
+			],
+			"parameters": {
+				"errorMessage": "={{ ((items) => \"Contact: Get Many: expected \" + [[\"no error\", (items.every((j) => !j.error))]].filter((pair) => !pair[1]).map((pair) => pair[0]).join(', ') + '; got ' + JSON.stringify(items).slice(0, 400))($('Contact: Get Many').all().map((i) => i.json)) }}"
+			}
+		}
+	],
+	"connections": {
+		"Start": {
+			"main": [
+				[
+					{
+						"node": "System: Get",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"System: Get": {
+			"main": [
+				[
+					{
+						"node": "Check: System: Get",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Check: System: Get": {
+			"main": [
+				[
+					{
+						"node": "Connection: Get Status",
+						"type": "main",
+						"index": 0
+					}
+				],
+				[
+					{
+						"node": "Failed: System: Get",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Connection: Get Status": {
+			"main": [
+				[
+					{
+						"node": "Check: Connection: Get Status",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Check: Connection: Get Status": {
+			"main": [
+				[
+					{
+						"node": "Connection: Get Line",
+						"type": "main",
+						"index": 0
+					}
+				],
+				[
+					{
+						"node": "Failed: Connection: Get Status",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Connection: Get Line": {
+			"main": [
+				[
+					{
+						"node": "Check: Connection: Get Line",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Check: Connection: Get Line": {
+			"main": [
+				[
+					{
+						"node": "Connection: Get Configuration",
+						"type": "main",
+						"index": 0
+					}
+				],
+				[
+					{
+						"node": "Failed: Connection: Get Line",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Connection: Get Configuration": {
+			"main": [
+				[
+					{
+						"node": "Check: Connection: Get Configuration",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Check: Connection: Get Configuration": {
+			"main": [
+				[
+					{
+						"node": "Device: Get Many (active)",
+						"type": "main",
+						"index": 0
+					}
+				],
+				[
+					{
+						"node": "Failed: Connection: Get Configuration",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Device: Get Many (active)": {
+			"main": [
+				[
+					{
+						"node": "Check: Device: Get Many (active)",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Check: Device: Get Many (active)": {
+			"main": [
+				[
+					{
+						"node": "Device: Get Many (limit 3, fields)",
+						"type": "main",
+						"index": 0
+					}
+				],
+				[
+					{
+						"node": "Failed: Device: Get Many (active)",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Device: Get Many (limit 3, fields)": {
+			"main": [
+				[
+					{
+						"node": "Check: Device: Get Many (limit 3, fields)",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Check: Device: Get Many (limit 3, fields)": {
+			"main": [
+				[
+					{
+						"node": "Device: Get (first device)",
+						"type": "main",
+						"index": 0
+					}
+				],
+				[
+					{
+						"node": "Failed: Device: Get Many (limit 3, fields)",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Device: Get (first device)": {
+			"main": [
+				[
+					{
+						"node": "Check: Device: Get (first device)",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Check: Device: Get (first device)": {
+			"main": [
+				[
+					{
+						"node": "Wi-Fi: Get State",
+						"type": "main",
+						"index": 0
+					}
+				],
+				[
+					{
+						"node": "Failed: Device: Get (first device)",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Wi-Fi: Get State": {
+			"main": [
+				[
+					{
+						"node": "Check: Wi-Fi: Get State",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Check: Wi-Fi: Get State": {
+			"main": [
+				[
+					{
+						"node": "Wi-Fi: Get Access Points",
+						"type": "main",
+						"index": 0
+					}
+				],
+				[
+					{
+						"node": "Failed: Wi-Fi: Get State",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Wi-Fi: Get Access Points": {
+			"main": [
+				[
+					{
+						"node": "Check: Wi-Fi: Get Access Points",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Check: Wi-Fi: Get Access Points": {
+			"main": [
+				[
+					{
+						"node": "Wi-Fi: Get Networks",
+						"type": "main",
+						"index": 0
+					}
+				],
+				[
+					{
+						"node": "Failed: Wi-Fi: Get Access Points",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Wi-Fi: Get Networks": {
+			"main": [
+				[
+					{
+						"node": "Check: Wi-Fi: Get Networks",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Check: Wi-Fi: Get Networks": {
+			"main": [
+				[
+					{
+						"node": "DHCP Lease: Get Many",
+						"type": "main",
+						"index": 0
+					}
+				],
+				[
+					{
+						"node": "Failed: Wi-Fi: Get Networks",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"DHCP Lease: Get Many": {
+			"main": [
+				[
+					{
+						"node": "Check: DHCP Lease: Get Many",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Check: DHCP Lease: Get Many": {
+			"main": [
+				[
+					{
+						"node": "Download: Get Many",
+						"type": "main",
+						"index": 0
+					}
+				],
+				[
+					{
+						"node": "Failed: DHCP Lease: Get Many",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Download: Get Many": {
+			"main": [
+				[
+					{
+						"node": "Check: Download: Get Many",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Check: Download: Get Many": {
+			"main": [
+				[
+					{
+						"node": "Download: Get Statistics",
+						"type": "main",
+						"index": 0
+					}
+				],
+				[
+					{
+						"node": "Failed: Download: Get Many",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Download: Get Statistics": {
+			"main": [
+				[
+					{
+						"node": "Check: Download: Get Statistics",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Check: Download: Get Statistics": {
+			"main": [
+				[
+					{
+						"node": "Download: Get Speed Mode",
+						"type": "main",
+						"index": 0
+					}
+				],
+				[
+					{
+						"node": "Failed: Download: Get Statistics",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Download: Get Speed Mode": {
+			"main": [
+				[
+					{
+						"node": "Check: Download: Get Speed Mode",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Check: Download: Get Speed Mode": {
+			"main": [
+				[
+					{
+						"node": "Call: Get Many (missed, 5)",
+						"type": "main",
+						"index": 0
+					}
+				],
+				[
+					{
+						"node": "Failed: Download: Get Speed Mode",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Call: Get Many (missed, 5)": {
+			"main": [
+				[
+					{
+						"node": "Check: Call: Get Many (missed, 5)",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Check: Call: Get Many (missed, 5)": {
+			"main": [
+				[
+					{
+						"node": "Voicemail: Get Many",
+						"type": "main",
+						"index": 0
+					}
+				],
+				[
+					{
+						"node": "Failed: Call: Get Many (missed, 5)",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Voicemail: Get Many": {
+			"main": [
+				[
+					{
+						"node": "Check: Voicemail: Get Many",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Check: Voicemail: Get Many": {
+			"main": [
+				[
+					{
+						"node": "Contact: Get Many",
+						"type": "main",
+						"index": 0
+					}
+				],
+				[
+					{
+						"node": "Failed: Voicemail: Get Many",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Contact: Get Many": {
+			"main": [
+				[
+					{
+						"node": "Check: Contact: Get Many",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Check: Contact: Get Many": {
+			"main": [
+				[],
+				[
+					{
+						"node": "Failed: Contact: Get Many",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		}
+	},
+	"settings": {}
+}

@@ -1,0 +1,319 @@
+{
+	"id": "freeboxFixtureWrites1",
+	"name": "Freebox fixture: safe writes",
+	"nodes": [
+		{
+			"id": "start",
+			"name": "Start",
+			"type": "n8n-nodes-base.manualTrigger",
+			"typeVersion": 1,
+			"position": [
+				0,
+				0
+			],
+			"parameters": {}
+		},
+		{
+			"id": "s0",
+			"name": "Speed Mode: before",
+			"type": "CUSTOM.freebox",
+			"typeVersion": 1,
+			"position": [
+				440,
+				0
+			],
+			"parameters": {
+				"resource": "download",
+				"operation": "getSpeedMode"
+			},
+			"credentials": {
+				"freeboxApi": "auto"
+			},
+			"executeOnce": true,
+			"alwaysOutputData": true
+		},
+		{
+			"id": "c0",
+			"name": "Check: Speed Mode: before",
+			"type": "n8n-nodes-base.if",
+			"typeVersion": 2.3,
+			"position": [
+				660,
+				0
+			],
+			"executeOnce": true,
+			"parameters": {
+				"conditions": {
+					"options": {
+						"caseSensitive": true,
+						"leftValue": "",
+						"typeValidation": "strict",
+						"version": 3
+					},
+					"conditions": [
+						{
+							"id": "c0c",
+							"leftValue": "={{ ((items) => (items.every((j) => !j.error)) && (items.every((j) => [\"throttling\",\"is_scheduled\"].every((k) => k in j))))($('Speed Mode: before').all().map((i) => i.json)) }}",
+							"rightValue": "",
+							"operator": {
+								"type": "boolean",
+								"operation": "true",
+								"singleValue": true
+							}
+						}
+					],
+					"combinator": "and"
+				},
+				"options": {}
+			}
+		},
+		{
+			"id": "f0",
+			"name": "Failed: Speed Mode: before",
+			"type": "n8n-nodes-base.stopAndError",
+			"typeVersion": 1,
+			"position": [
+				660,
+				200
+			],
+			"parameters": {
+				"errorMessage": "={{ ((items) => \"Speed Mode: before: expected \" + [[\"no error\", (items.every((j) => !j.error))], [\"keys throttling, is_scheduled\", (items.every((j) => [\"throttling\",\"is_scheduled\"].every((k) => k in j)))]].filter((pair) => !pair[1]).map((pair) => pair[0]).join(', ') + '; got ' + JSON.stringify(items).slice(0, 400))($('Speed Mode: before').all().map((i) => i.json)) }}"
+			}
+		},
+		{
+			"id": "s1",
+			"name": "Speed Mode: set to current",
+			"type": "CUSTOM.freebox",
+			"typeVersion": 1,
+			"position": [
+				880,
+				0
+			],
+			"parameters": {
+				"resource": "download",
+				"operation": "setSpeedMode",
+				"throttling": "={{ $('Speed Mode: before').first().json.is_scheduled ? 'schedule' : $('Speed Mode: before').first().json.throttling }}"
+			},
+			"credentials": {
+				"freeboxApi": "auto"
+			},
+			"executeOnce": true,
+			"alwaysOutputData": true
+		},
+		{
+			"id": "c1",
+			"name": "Check: Speed Mode: set to current",
+			"type": "n8n-nodes-base.if",
+			"typeVersion": 2.3,
+			"position": [
+				1100,
+				0
+			],
+			"executeOnce": true,
+			"parameters": {
+				"conditions": {
+					"options": {
+						"caseSensitive": true,
+						"leftValue": "",
+						"typeValidation": "strict",
+						"version": 3
+					},
+					"conditions": [
+						{
+							"id": "c1c",
+							"leftValue": "={{ ((items) => (items.every((j) => !j.error)) && (items[0].throttling === $('Speed Mode: before').first().json.throttling && items[0].is_scheduled === $('Speed Mode: before').first().json.is_scheduled))($('Speed Mode: set to current').all().map((i) => i.json)) }}",
+							"rightValue": "",
+							"operator": {
+								"type": "boolean",
+								"operation": "true",
+								"singleValue": true
+							}
+						}
+					],
+					"combinator": "and"
+				},
+				"options": {}
+			}
+		},
+		{
+			"id": "f1",
+			"name": "Failed: Speed Mode: set to current",
+			"type": "n8n-nodes-base.stopAndError",
+			"typeVersion": 1,
+			"position": [
+				1100,
+				200
+			],
+			"parameters": {
+				"errorMessage": "={{ ((items) => \"Speed Mode: set to current: expected \" + [[\"no error\", (items.every((j) => !j.error))], [\"same mode as before\", (items[0].throttling === $('Speed Mode: before').first().json.throttling && items[0].is_scheduled === $('Speed Mode: before').first().json.is_scheduled)]].filter((pair) => !pair[1]).map((pair) => pair[0]).join(', ') + '; got ' + JSON.stringify(items).slice(0, 400))($('Speed Mode: set to current').all().map((i) => i.json)) }}"
+			}
+		},
+		{
+			"id": "s2",
+			"name": "Download: missing ID",
+			"type": "CUSTOM.freebox",
+			"typeVersion": 1,
+			"position": [
+				1320,
+				0
+			],
+			"parameters": {
+				"resource": "download",
+				"operation": "update",
+				"downloadId": "={{ undefined }}",
+				"updateFields": {
+					"status": "stopped"
+				}
+			},
+			"credentials": {
+				"freeboxApi": "auto"
+			},
+			"executeOnce": true,
+			"alwaysOutputData": true,
+			"onError": "continueRegularOutput"
+		},
+		{
+			"id": "c2",
+			"name": "Check: Download: missing ID",
+			"type": "n8n-nodes-base.if",
+			"typeVersion": 2.3,
+			"position": [
+				1540,
+				0
+			],
+			"executeOnce": true,
+			"parameters": {
+				"conditions": {
+					"options": {
+						"caseSensitive": true,
+						"leftValue": "",
+						"typeValidation": "strict",
+						"version": 3
+					},
+					"conditions": [
+						{
+							"id": "c2c",
+							"leftValue": "={{ ((items) => (items.length === 1 && String(items[0].error ?? '').includes(\"must be a numeric ID\")))($('Download: missing ID').all().map((i) => i.json)) }}",
+							"rightValue": "",
+							"operator": {
+								"type": "boolean",
+								"operation": "true",
+								"singleValue": true
+							}
+						}
+					],
+					"combinator": "and"
+				},
+				"options": {}
+			}
+		},
+		{
+			"id": "f2",
+			"name": "Failed: Download: missing ID",
+			"type": "n8n-nodes-base.stopAndError",
+			"typeVersion": 1,
+			"position": [
+				1540,
+				200
+			],
+			"parameters": {
+				"errorMessage": "={{ ((items) => \"Download: missing ID: expected \" + [[\"fails with \\\"must be a numeric ID\\\"\", (items.length === 1 && String(items[0].error ?? '').includes(\"must be a numeric ID\"))]].filter((pair) => !pair[1]).map((pair) => pair[0]).join(', ') + '; got ' + JSON.stringify(items).slice(0, 400))($('Download: missing ID').all().map((i) => i.json)) }}"
+			}
+		}
+	],
+	"connections": {
+		"Start": {
+			"main": [
+				[
+					{
+						"node": "Speed Mode: before",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Speed Mode: before": {
+			"main": [
+				[
+					{
+						"node": "Check: Speed Mode: before",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Check: Speed Mode: before": {
+			"main": [
+				[
+					{
+						"node": "Speed Mode: set to current",
+						"type": "main",
+						"index": 0
+					}
+				],
+				[
+					{
+						"node": "Failed: Speed Mode: before",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Speed Mode: set to current": {
+			"main": [
+				[
+					{
+						"node": "Check: Speed Mode: set to current",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Check: Speed Mode: set to current": {
+			"main": [
+				[
+					{
+						"node": "Download: missing ID",
+						"type": "main",
+						"index": 0
+					}
+				],
+				[
+					{
+						"node": "Failed: Speed Mode: set to current",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Download: missing ID": {
+			"main": [
+				[
+					{
+						"node": "Check: Download: missing ID",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Check: Download: missing ID": {
+			"main": [
+				[],
+				[
+					{
+						"node": "Failed: Download: missing ID",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		}
+	},
+	"settings": {}
+}

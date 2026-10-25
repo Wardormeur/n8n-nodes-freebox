@@ -1,0 +1,54 @@
+{
+	"name": "n8n-nodes-freebox",
+	"version": "0.1.0",
+	"description": "n8n community node for reading a Freebox's devices, connection, Wi-Fi, downloads, calls, contacts and system status through the Freebox OS API",
+	"keywords": [
+		"n8n-community-node-package"
+	],
+	"license": "MIT",
+	"homepage": "https://github.com/wardormeur/n8n-nodes-freebox",
+	"author": {
+		"name": "Ward Ormeur",
+		"email": "wardormeur@gmail.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/wardormeur/n8n-nodes-freebox.git"
+	},
+	"main": "index.js",
+	"scripts": {
+		"build": "tsc -p tsconfig.json && node scripts/copy-assets.js",
+		"dev": "tsc -p tsconfig.json --watch",
+		"lint": "eslint nodes credentials package.json",
+		"lint:fix": "eslint nodes credentials package.json --fix",
+		"test": "jest",
+		"test:e2e": "node test/e2e/retry.e2e.cjs",
+		"test:fixtures": "node test/fixtures/run.cjs"
+	},
+	"files": [
+		"dist"
+	],
+	"n8n": {
+		"n8nNodesApiVersion": 1,
+		"credentials": [
+			"dist/credentials/FreeboxApi.credentials.js"
+		],
+		"nodes": [
+			"dist/nodes/Freebox/Freebox.node.js"
+		]
+	},
+	"devDependencies": {
+		"@n8n/eslint-plugin-community-nodes": "^0.35.0",
+		"@types/jest": "^30.0.0",
+		"@types/node": "^26.6.5",
+		"eslint": "9.29.0",
+		"jest": "^30.5.2",
+		"n8n-workflow": "^2.16.0",
+		"ts-jest": "^29.4.14",
+		"typescript": "^6.0.3",
+		"typescript-eslint": "^8.71.1"
+	},
+	"peerDependencies": {
+		"n8n-workflow": "*"
+	}
+}
