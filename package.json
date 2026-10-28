@@ -1,19 +1,19 @@
 {
 	"name": "n8n-nodes-freebox",
 	"version": "0.1.0",
-	"description": "n8n community node for reading a Freebox's devices, connection, Wi-Fi, downloads, calls, contacts and system status through the Freebox OS API",
+	"description": "n8n community node for a Freebox through the Freebox OS API: read devices, connection, Wi-Fi, downloads, calls, contacts and system status, and make low-risk changes such as waking a device, pausing Wi-Fi or adding downloads",
 	"keywords": [
 		"n8n-community-node-package"
 	],
 	"license": "MIT",
-	"homepage": "https://github.com/wardormeur/n8n-nodes-freebox",
+	"homepage": "https://github.com/Wardormeur/n8n-nodes-freebox",
 	"author": {
 		"name": "Wardormeur",
 		"email": "wardormeur@gmail.com"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/wardormeur/n8n-nodes-freebox.git"
+		"url": "git+https://github.com/Wardormeur/n8n-nodes-freebox.git"
 	},
 	"main": "index.js",
 	"scripts": {
