@@ -152,6 +152,12 @@ HTTP calls with Retry On Fail off (1) and on with 3 tries (3).
    (every operation). Run it with the n8n-node-builder skill's
    `scripts/n8n-run.mjs --count-http mafreebox.freebox.fr`.
 
+### Releasing
+
+`npm version patch` (or `minor`/`major`), then `git push --follow-tags`. The
+tag starts `.github/workflows/publish.yml`, which lints, builds, tests and
+publishes to npm with a provenance statement.
+
 ## License
 
 MIT
